@@ -46,7 +46,10 @@ return the user information for the matching user in the users table
 app.post('/signin', signin.handleSignIn(db, bcrypt))
 app.post('/register', register.handleRegister(db, bcrypt))
 app.get('/profile/:id', profile.handleProfile(db))
-app.put('/image', image.handleImage(db))
+app.put('/image', image.handleImage())
+app.put('/entries', image.handleEntriesUpdate(db))
+//app.post('/imageurl', image.handleImageApiCall())
+//create a new endpoint that returns 
 
 app.listen(3000, () => {
     console.log('smart-brain-api is running on port 3000');
