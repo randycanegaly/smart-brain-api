@@ -20,6 +20,8 @@ const db = knex({ //I think this returns an instance of a knex object ??? TO DO 
       database : 'smart-brain'
     }
   });
+
+//console.log('db:', db.select);
   
 
 // select returns a promise - it is asynchronous  
@@ -31,11 +33,20 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {res.send('route not used')});
-app.post('/signin', (req, res) => {signin.handleSignIn(req, res, db, bcrypt)}); //TO DO - investigate the signin.handleSignIn(db, bcrypt) version of this - how work?
-app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt)})
-app.get('/profile/:id', (req, res) => {profile.handleProfile(req, res, db)});
-app.put('/image', (req, res) => {image.handleImage(req, res, db)});
+app.get('/', (req, res) => {res.send('route not used')})
+/*
+post() takes a route string and a callback function - callback takes db and bcrypt
+handleSignIn is the callback function, the ExpressJS code uses that callback
+when Express uses the handleSignIn callback function, that callback returns another function that takes (req, res)
+Express uses that function, passing it req and res
+that function pulls the email and password out of req, and via hashing, checks the login table for that password
+if there is a matching hash of password in the login table
+return the user information for the matching user in the users table
+*/
+app.post('/signin', signin.handleSignIn(db, bcrypt))
+app.post('/register', register.handleRegister(db, bcrypt))
+app.get('/profile/:id', profile.handleProfile(db))
+app.put('/image', image.handleImage(db))
 
 app.listen(3000, () => {
     console.log('smart-brain-api is running on port 3000');

@@ -1,4 +1,6 @@
-const handleImage = (req, res, db, bcrypt) => {
+const Clarifai = require('clarifai');
+
+const handleImage = (db) => (req, res) => {
     const { id } = req.body;
     db('users').where('id', '=', id)
     .increment('entries', 1)// increment is a knex provided function
