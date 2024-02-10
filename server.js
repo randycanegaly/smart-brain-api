@@ -20,6 +20,8 @@ const db = knex({ //I think this returns an instance of a knex object ??? TO DO 
     //   database : 'smart-brain'
     // }
     connection: {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false},
       host : process.env.DATABASE_HOST,
       port : 5432,
       user : process.env.DATABASE_USER,
