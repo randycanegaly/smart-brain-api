@@ -28,7 +28,7 @@ const db = knex({ //I think this returns an instance of a knex object ??? TO DO 
     }
   });
 
-//console.log('db:', db.select);
+console.log('db:', db.select);
   
 
 // select returns a promise - it is asynchronous  
