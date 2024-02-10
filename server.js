@@ -35,6 +35,7 @@ const db = knex({ //I think this returns an instance of a knex object ??? TO DO 
 //db.select().table('users').then(data => console.log(data));
 
 const app = express();
+const port = process.env.PORT || 4000;
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
@@ -58,6 +59,10 @@ app.put('/entries', image.handleEntriesUpdate(db))
 //app.post('/imageurl', image.handleImageApiCall())
 //create a new endpoint that returns 
 
-app.listen(3000, () => {
-    console.log('smart-brain-api is running on port 3000');
+// app.listen(3000, () => {
+//     console.log('smart-brain-api is running on port 3000');
+// });
+
+app.listen(port, () => {
+    console.log(`smart-brain-api is running on port ${port}`);
 });
