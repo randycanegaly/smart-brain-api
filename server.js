@@ -12,12 +12,19 @@ const profile = require('./controllers/profile');
 
 const db = knex({ //I think this returns an instance of a knex object ??? TO DO - check knex docs
     client: 'pg',
+    // connection: {
+    //   host : '127.0.0.1',
+    //   port : 5432,
+    //   user : 'randytwo',
+    //   password : '',
+    //   database : 'smart-brain'
+    // }
     connection: {
-      host : '127.0.0.1',
+      host : process.env.DATABASE_HOST,
       port : 5432,
-      user : 'randytwo',
-      password : '',
-      database : 'smart-brain'
+      user : process.env.DATABASE_USER,
+      password : process.env.DATABASE_PW,
+      database : process.env.DATABASE_DB
     }
   });
 
