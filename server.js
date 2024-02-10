@@ -28,6 +28,7 @@ const db = knex({ //I think this returns an instance of a knex object ??? TO DO 
     },
     pool: {
       afterCreate: function (conn, done) {
+        console.log("got to here, before first query");
         // in this example we use pg driver's connection API
         conn.query('SET timezone="UTC";', function (err) {
           if (err) {
@@ -37,6 +38,7 @@ const db = knex({ //I think this returns an instance of a knex object ??? TO DO 
             done(err, conn);
           } else {
             // do the second query...
+            console.log("got to here, before second query");
             conn.query(
               'SELECT set_limit(0.01);', 
               function (err) {
@@ -49,12 +51,13 @@ const db = knex({ //I think this returns an instance of a knex object ??? TO DO 
               });
           }
         });
+        console.log("at end of afterCreate");
       }
     }
 
   });
 
-console.log('db:', db.select);
+// console.log('db:', db.select);
   
 
 // select returns a promise - it is asynchronous  
