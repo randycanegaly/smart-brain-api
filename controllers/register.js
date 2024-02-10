@@ -1,6 +1,6 @@
 const handleRegister = (db, bcrypt) => (req, res) => {
     console.log('in register, body:', req.body);
-    //console.log('in register, db:', db);
+    console.log('in register, db:', db.);
     const { email, name, password } = req.body;//the web page is requesting server to register by passing these in the request body
     if (!email || !name || !password) {
         return res.status(400).json('incorrect form submission');
@@ -9,13 +9,16 @@ const handleRegister = (db, bcrypt) => (req, res) => {
     console.log('in register, email:', email, 'name:', name, 'password:', password);
         db.transaction(trx => {//need to do 2 db operations and they must fail
             //together or succeed together. so, bundle them in the same transaction
+            console.log("got to here, line 12");
             trx.insert({
                 hash: hash,
                 email: email
             })
             .into('login')//put the email address and hashed pw into the login table
             .returning('email') //get back from the database the email we put in
-            .then(loginEmail => {//process as 'loginEmail' so we keep track that it's different
+            .then(loginEmail => {
+                console.log("got to here, line 20");
+                //process as 'loginEmail' so we keep track that it's different
                 return trx('users')//return here because then returns a promise and
                 //the function passed in has to return what that promise will resolve to
                 //Note 'trx' to show working the second part within the transaction
@@ -30,6 +33,7 @@ const handleRegister = (db, bcrypt) => (req, res) => {
                 //one to the users table. Note email in both, that's the foreign key
                 //and that only login has the hashed password
                 .then(user => {
+                    console.log("got to here, line 36");
                     res.json(user[0]);//returns an array, so index in. Should only be registering one at a time so OK.
                 })
             })
