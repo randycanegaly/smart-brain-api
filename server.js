@@ -25,7 +25,33 @@ const db = knex({ //I think this returns an instance of a knex object ??? TO DO 
       user : process.env.DATABASE_USER,
       password : process.env.DATABASE_PW,
       database : process.env.DATABASE_DB
+    },
+    pool: {
+      afterCreate: function (conn, done) {
+        // in this example we use pg driver's connection API
+        conn.query('SET timezone="UTC";', function (err) {
+          if (err) {
+            console.log(err);
+            // first query failed, 
+            // return error and don't try to make next query
+            done(err, conn);
+          } else {
+            // do the second query...
+            conn.query(
+              'SELECT set_limit(0.01);', 
+              function (err) {
+                // if err is not falsy, 
+                //  connection is discarded from pool
+                // if connection aquire was triggered by a 
+                // query the error is passed to query promise
+                console.log(err);
+                done(err, conn);
+              });
+          }
+        });
+      }
     }
+
   });
 
 console.log('db:', db.select);
