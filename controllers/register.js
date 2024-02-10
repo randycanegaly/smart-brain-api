@@ -1,6 +1,6 @@
 const handleRegister = (db, bcrypt) => (req, res) => {
     console.log('in register, body:', req.body);
-    console.log('in register, db:', db.);
+    //console.log('in register, db:', db);
     const { email, name, password } = req.body;//the web page is requesting server to register by passing these in the request body
     if (!email || !name || !password) {
         return res.status(400).json('incorrect form submission');
